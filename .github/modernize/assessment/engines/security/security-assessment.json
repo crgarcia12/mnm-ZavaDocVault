@@ -1,0 +1,86 @@
+{
+  "GeneratedAt": "2026-05-29T04:27:16.0000000Z",
+  "ProjectPath": ".",
+  "Summary": {
+    "TotalFindings": 5,
+    "CveCount": 0,
+    "CweCount": 5,
+    "BySeverity": {
+      "mandatory": 1,
+      "optional": 3,
+      "potential": 1
+    },
+    "ByCategory": {
+      "Code Quality": 2,
+      "Credentials & Secrets": 2,
+      "File & Path Security": 1
+    },
+    "TotalRulesAssessed": 59,
+    "RulesPassed": 54
+  },
+  "CveFindings": [],
+  "CweFindings": [
+    {
+      "Id": "CWE-477",
+      "Name": "Use of Obsolete Function",
+      "Category": "Code Quality",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "The code uses deprecated or obsolete functions, which suggests that the code has not been actively reviewed or maintained.",
+      "Files": [
+        "build.gradle"
+      ],
+      "Explanation": "The build uses legacy Gradle configuration (`apply plugin` and `sourceCompatibility` project properties) that is obsolete with current Gradle behavior and indicates outdated build maintenance patterns."
+    },
+    {
+      "Id": "CWE-789",
+      "Name": "Memory Allocation with Excessive Size Value",
+      "Category": "Code Quality",
+      "Severity": "potential",
+      "StoryPoint": 5,
+      "Description": "The product allocates memory based on an untrusted, large size value, but it does not ensure that the size is within expected limits, allowing arbitrary amounts of memory to be allocated.",
+      "Files": [
+        "src/main/java/com/zavabank/docvault/DocumentUploadServlet.java"
+      ],
+      "Explanation": "DocumentUploadServlet.readBytes reads uploaded file input stream into ByteArrayOutputStream without validating maximum in-code size (lines 108-117), allowing large memory allocation from request-controlled content."
+    },
+    {
+      "Id": "CWE-259",
+      "Name": "Use of Hard-coded Password",
+      "Category": "Credentials & Secrets",
+      "Severity": "optional",
+      "StoryPoint": 5,
+      "Description": "The product contains a hard-coded password, which it uses for its own inbound authentication or for outbound communication to external components.",
+      "Files": [
+        "src/main/resources/doc-vault.properties",
+        "Dockerfile"
+      ],
+      "Explanation": "Hard-coded database password value `YourStrong!Passw0rd` is present in `src/main/resources/doc-vault.properties` and as `DB_PASSWORD` default in `Dockerfile`."
+    },
+    {
+      "Id": "CWE-798",
+      "Name": "Use of Hard-coded Credentials",
+      "Category": "Credentials & Secrets",
+      "Severity": "optional",
+      "StoryPoint": 5,
+      "Description": "The product contains hard-coded credentials, such as a password or cryptographic key.",
+      "Files": [
+        "src/main/resources/doc-vault.properties",
+        "Dockerfile"
+      ],
+      "Explanation": "The application includes hard-coded database credentials (`db.user=sa`, `db.****** in resource properties and mirrored container defaults in Dockerfile environment variables."
+    },
+    {
+      "Id": "CWE-434",
+      "Name": "Unrestricted Upload of File with Dangerous Type",
+      "Category": "File & Path Security",
+      "Severity": "mandatory",
+      "StoryPoint": 8,
+      "Description": "The product allows the upload or transfer of dangerous file types that are automatically processed within its environment.",
+      "Files": [
+        "src/main/java/com/zavabank/docvault/DocumentUploadServlet.java"
+      ],
+      "Explanation": "DocumentUploadServlet.doPost accepts multipart file uploads via request.getPart(\"file\") and persists bytes/content type without extension or MIME allowlist validation (lines 40-83), enabling upload of dangerous file types."
+    }
+  ]
+}

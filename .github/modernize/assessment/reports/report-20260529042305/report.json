@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "analysisStartTime": "2026-05-29T04:23:05Z",
+    "targetIds": [
+      "aks"
+    ],
+    "targetDisplayNames": [
+      "Azure Kubernetes Service"
+    ]
+  },
+  "rules": {},
+  "projects": [
+    {
+      "properties": {
+        "repo": "mnm-ZavaDocVault",
+        "appName": "ZavaDocVault",
+        "languages": [
+          "Java"
+        ],
+        "frameworks": [
+          "Java Servlet 3.1",
+          "JSP"
+        ],
+        "tools": [
+          "Gradle",
+          "Tomcat 9"
+        ],
+        "jdkVersion": "1.8"
+      },
+      "incidents": []
+    }
+  ],
+  "security": [
+    {
+      "id": "CWE-477",
+      "title": "Use of Obsolete Function",
+      "category": "Code Quality",
+      "severity": "optional",
+      "description": "The code uses deprecated or obsolete functions, which suggests that the code has not been actively reviewed or maintained.",
+      "evidence": {
+        "files": [
+          "build.gradle"
+        ],
+        "explanation": "The build uses legacy Gradle configuration (`apply plugin` and `sourceCompatibility` project properties) that is obsolete with current Gradle behavior and indicates outdated build maintenance patterns."
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CWE-789",
+      "title": "Memory Allocation with Excessive Size Value",
+      "category": "Code Quality",
+      "severity": "potential",
+      "description": "The product allocates memory based on an untrusted, large size value, but it does not ensure that the size is within expected limits, allowing arbitrary amounts of memory to be allocated.",
+      "evidence": {
+        "files": [
+          "src/main/java/com/zavabank/docvault/DocumentUploadServlet.java"
+        ],
+        "explanation": "DocumentUploadServlet.readBytes reads uploaded file input stream into ByteArrayOutputStream without validating maximum in-code size (lines 108-117), allowing large memory allocation from request-controlled content."
+      },
+      "storyPoint": 5
+    },
+    {
+      "id": "CWE-259",
+      "title": "Use of Hard-coded Password",
+      "category": "Credentials & Secrets",
+      "severity": "optional",
+      "description": "The product contains a hard-coded password, which it uses for its own inbound authentication or for outbound communication to external components.",
+      "evidence": {
+        "files": [
+          "src/main/resources/doc-vault.properties",
+          "Dockerfile"
+        ],
+        "explanation": "Hard-coded database password value `YourStrong!Passw0rd` is present in `src/main/resources/doc-vault.properties` and as `DB_PASSWORD` default in `Dockerfile`."
+      },
+      "storyPoint": 5
+    },
+    {
+      "id": "CWE-798",
+      "title": "Use of Hard-coded Credentials",
+      "category": "Credentials & Secrets",
+      "severity": "optional",
+      "description": "The product contains hard-coded credentials, such as a password or cryptographic key.",
+      "evidence": {
+        "files": [
+          "src/main/resources/doc-vault.properties",
+          "Dockerfile"
+        ],
+        "explanation": "The application includes hard-coded database credentials (`db.user=sa`, `db.****** in resource properties and mirrored container defaults in Dockerfile environment variables."
+      },
+      "storyPoint": 5
+    },
+    {
+      "id": "CWE-434",
+      "title": "Unrestricted Upload of File with Dangerous Type",
+      "category": "File & Path Security",
+      "severity": "mandatory",
+      "description": "The product allows the upload or transfer of dangerous file types that are automatically processed within its environment.",
+      "evidence": {
+        "files": [
+          "src/main/java/com/zavabank/docvault/DocumentUploadServlet.java"
+        ],
+        "explanation": "DocumentUploadServlet.doPost accepts multipart file uploads via request.getPart(\"file\") and persists bytes/content type without extension or MIME allowlist validation (lines 40-83), enabling upload of dangerous file types."
+      },
+      "storyPoint": 8
+    }
+  ]
+}
