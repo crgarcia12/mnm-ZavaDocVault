@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Tasks template for modernization plan. Generate this file alongside plan.md to track individual migration tasks.",
+  "tasks": [
+    {
+      "type": "security",
+      "id": "001-security-cve-remediation",
+      "description": "Scan and remediate dependency vulnerabilities before Azure modernization execution.",
+      "reason": "Security remediation is mandatory before deployment to reduce known risk exposure.",
+      "requirements": "Addresses issues: CVE-2025-59250, CVE-2023-5072, CVE-2022-45688. Scan Java dependencies, upgrade vulnerable packages to patched versions, document breaking-change risk for major upgrades, and verify build/test results after remediation.",
+      "skills": [
+        {
+          "name": "validate-cves-and-fix",
+          "location": "builtin"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "deployment",
+      "id": "002-deployment-azure-container-apps",
+      "description": "Deploy the modernized Java web application to Azure Container Apps.",
+      "reason": "The requested modernization target is Azure, and deployment is required to complete migration scope.",
+      "requirements": "Package and deploy the application to Azure Container Apps using managed identity-based authentication where applicable.",
+      "dependencies": [
+        "001-security-cve-remediation"
+      ],
+      "targetAzureService": "Azure Container Apps",
+      "resourceStatus": "existing resource",
+      "deploymentTool": "bicep",
+      "skills": [
+        {
+          "name": "azcli-containerapp-deploy",
+          "location": "builtin"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "planName": "modernization-plan",
+    "projectName": "ZavaDocVault",
+    "language": "java",
+    "createdAt": "2026-05-29T00:43:43.935Z",
+    "version": "1.0"
+  }
+}
