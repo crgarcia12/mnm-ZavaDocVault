@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "analysisStartTime": "2026-05-29T03:29:05Z",
+    "analysisEndTime": "2026-05-29T03:29:25Z",
+    "tool": "AppCAT",
+    "toolVersion": "n/a",
+    "target": "azure-aks"
+  },
+  "rules": {},
+  "projects": [
+    {
+      "properties": {
+        "repo": "mnm-ZavaDocVault",
+        "languages": ["Java"],
+        "frameworks": ["Java Servlet API 3.1", "Apache Tomcat 9"],
+        "tools": ["Gradle", "WAR packaging"],
+        "jdkVersion": "8",
+        "applicationType": "Web Application"
+      },
+      "incidents": [],
+      "ruleInstances": []
+    }
+  ],
+  "security": [],
+  "rearchitect": []
+}
